@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.talend.ci.api-tester</groupId>
+    <artifactId>petstore_api</artifactId>
+    <version>1.0.0</version>
+    <build>
+        <plugins>
+            <plugin>
+
+                <!-- The Talend maven plugin -->
+                <groupId>org.talend.ci</groupId>
+                <artifactId>api-tester-maven-plugin</artifactId>
+                <version>1.0.0</version>
+
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                          <file>Petstore_API.json</file>
+                          <selectedEnvironment>SWAPI's context</selectedEnvironment>
+
+                          <!-- Put your Account ID here. Consult your Account Information in Talend Management Console Subscription page -->
+                          <accountId>492b2ecd-888d-4087-8ab5-42cab17334ad</accountId>
+
+                          <instance>dw</instance>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <pluginRepositories>
+        <!-- Put your plugin repository configuration here -->
+    </pluginRepositories>
+</project>
