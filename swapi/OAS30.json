@@ -1,0 +1,594 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Star Wars API",
+    "description" : "No description",
+    "contact" : { },
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://swapi.co/api"
+  } ],
+  "paths" : {
+    "/films/" : {
+      "get" : {
+        "summary" : "Get a list of Star Wars films",
+        "responses" : {
+          "200" : {
+            "description" : "Status 200"
+          }
+        }
+      }
+    },
+    "/films/{id}/" : {
+      "get" : {
+        "summary" : "Get a Star Wars film by ID",
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Film"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "id",
+        "in" : "path",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/people/" : {
+      "get" : {
+        "summary" : "Get a list of Star Wars characters",
+        "responses" : {
+          "200" : {
+            "description" : "Status 200"
+          }
+        }
+      }
+    },
+    "/people/{id}/" : {
+      "get" : {
+        "summary" : "Get a Star Wars character by ID",
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Character"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "id",
+        "in" : "path",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/planets/" : {
+      "get" : {
+        "summary" : "Get a list of planets",
+        "responses" : {
+          "200" : {
+            "description" : "Status 200"
+          }
+        }
+      }
+    },
+    "/planets/{id}/" : {
+      "get" : {
+        "summary" : "Get a planet by ID",
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Planet"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "id",
+        "in" : "path",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/species/" : {
+      "get" : {
+        "summary" : "Get a list of species",
+        "responses" : {
+          "200" : {
+            "description" : "Status 200"
+          }
+        }
+      }
+    },
+    "/species/{id}/" : {
+      "get" : {
+        "summary" : "Get a species by ID",
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Species"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "id",
+        "in" : "path",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/starships/" : {
+      "get" : {
+        "summary" : "Get a list of starships",
+        "responses" : {
+          "200" : {
+            "description" : "Status 200"
+          }
+        }
+      }
+    },
+    "/starships/{id}/" : {
+      "get" : {
+        "summary" : "Get a starship by ID",
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Starship"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "id",
+        "in" : "path",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/vehicles/" : {
+      "get" : {
+        "summary" : "Get a list of vehicles",
+        "responses" : {
+          "200" : {
+            "description" : "Status 200"
+          }
+        }
+      }
+    },
+    "/vehicles/{id}/" : {
+      "get" : {
+        "summary" : "Get a vehicle by ID",
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Vehicle"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "id",
+        "in" : "path",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Character" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "height" : {
+            "type" : "string"
+          },
+          "mass" : {
+            "type" : "string"
+          },
+          "hair_color" : {
+            "type" : "string"
+          },
+          "skin_color" : {
+            "type" : "string"
+          },
+          "eye_color" : {
+            "type" : "string"
+          },
+          "birth_year" : {
+            "type" : "string"
+          },
+          "gender" : {
+            "type" : "string"
+          },
+          "homeworld" : {
+            "type" : "string"
+          },
+          "films" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "species" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "vehicles" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "starships" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "created" : {
+            "type" : "string"
+          },
+          "edited" : {
+            "type" : "string"
+          },
+          "url" : {
+            "type" : "string"
+          }
+        },
+        "example" : "{\r\n    \"name\": \"Luke Skywalker\", \r\n    \"height\": \"172\", \r\n    \"mass\": \"77\", \r\n    \"hair_color\": \"blond\", \r\n    \"skin_color\": \"fair\", \r\n    \"eye_color\": \"blue\", \r\n    \"birth_year\": \"19BBY\", \r\n    \"gender\": \"male\", \r\n    \"homeworld\": \"https://swapi.co/api/planets/1/\", \r\n    \"films\": [\r\n        \"https://swapi.co/api/films/2/\", \r\n        \"https://swapi.co/api/films/6/\", \r\n        \"https://swapi.co/api/films/3/\", \r\n        \"https://swapi.co/api/films/1/\", \r\n        \"https://swapi.co/api/films/7/\"\r\n    ], \r\n    \"species\": [\r\n        \"https://swapi.co/api/species/1/\"\r\n    ], \r\n    \"vehicles\": [\r\n        \"https://swapi.co/api/vehicles/14/\", \r\n        \"https://swapi.co/api/vehicles/30/\"\r\n    ], \r\n    \"starships\": [\r\n        \"https://swapi.co/api/starships/12/\", \r\n        \"https://swapi.co/api/starships/22/\"\r\n    ], \r\n    \"created\": \"2014-12-09T13:50:51.644000Z\", \r\n    \"edited\": \"2014-12-20T21:17:56.891000Z\", \r\n    \"url\": \"https://swapi.co/api/people/1/\"\r\n}"
+      },
+      "Planet" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "rotation_period" : {
+            "type" : "string"
+          },
+          "orbital_period" : {
+            "type" : "string"
+          },
+          "diameter" : {
+            "type" : "string"
+          },
+          "climate" : {
+            "type" : "string"
+          },
+          "gravity" : {
+            "type" : "string"
+          },
+          "terrain" : {
+            "type" : "string"
+          },
+          "surface_water" : {
+            "type" : "string"
+          },
+          "population" : {
+            "type" : "string"
+          },
+          "residents" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "films" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "created" : {
+            "type" : "string"
+          },
+          "edited" : {
+            "type" : "string"
+          },
+          "url" : {
+            "type" : "string"
+          }
+        },
+        "example" : "{\r\n    \"name\": \"Tatooine\", \r\n    \"rotation_period\": \"23\", \r\n    \"orbital_period\": \"304\", \r\n    \"diameter\": \"10465\", \r\n    \"climate\": \"arid\", \r\n    \"gravity\": \"1 standard\", \r\n    \"terrain\": \"desert\", \r\n    \"surface_water\": \"1\", \r\n    \"population\": \"200000\", \r\n    \"residents\": [\r\n        \"https://swapi.co/api/people/1/\", \r\n        \"https://swapi.co/api/people/2/\", \r\n        \"https://swapi.co/api/people/4/\", \r\n        \"https://swapi.co/api/people/6/\", \r\n        \"https://swapi.co/api/people/7/\", \r\n        \"https://swapi.co/api/people/8/\", \r\n        \"https://swapi.co/api/people/9/\", \r\n        \"https://swapi.co/api/people/11/\", \r\n        \"https://swapi.co/api/people/43/\", \r\n        \"https://swapi.co/api/people/62/\"\r\n    ], \r\n    \"films\": [\r\n        \"https://swapi.co/api/films/5/\", \r\n        \"https://swapi.co/api/films/4/\", \r\n        \"https://swapi.co/api/films/6/\", \r\n        \"https://swapi.co/api/films/3/\", \r\n        \"https://swapi.co/api/films/1/\"\r\n    ], \r\n    \"created\": \"2014-12-09T13:50:49.641000Z\", \r\n    \"edited\": \"2014-12-21T20:48:04.175778Z\", \r\n    \"url\": \"https://swapi.co/api/planets/1/\"\r\n}"
+      },
+      "Species" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "classification" : {
+            "type" : "string"
+          },
+          "designation" : {
+            "type" : "string"
+          },
+          "average_height" : {
+            "type" : "string"
+          },
+          "skin_colors" : {
+            "type" : "string"
+          },
+          "hair_colors" : {
+            "type" : "string"
+          },
+          "eye_colors" : {
+            "type" : "string"
+          },
+          "average_lifespan" : {
+            "type" : "string"
+          },
+          "homeworld" : {
+            "type" : "string"
+          },
+          "language" : {
+            "type" : "string"
+          },
+          "people" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "films" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "created" : {
+            "type" : "string"
+          },
+          "edited" : {
+            "type" : "string"
+          },
+          "url" : {
+            "type" : "string"
+          }
+        },
+        "example" : "{\r\n    \"name\": \"Human\", \r\n    \"classification\": \"mammal\", \r\n    \"designation\": \"sentient\", \r\n    \"average_height\": \"180\", \r\n    \"skin_colors\": \"caucasian, black, asian, hispanic\", \r\n    \"hair_colors\": \"blonde, brown, black, red\", \r\n    \"eye_colors\": \"brown, blue, green, hazel, grey, amber\", \r\n    \"average_lifespan\": \"120\", \r\n    \"homeworld\": \"https://swapi.co/api/planets/9/\", \r\n    \"language\": \"Galactic Basic\", \r\n    \"people\": [\r\n        \"https://swapi.co/api/people/1/\", \r\n        \"https://swapi.co/api/people/4/\", \r\n        \"https://swapi.co/api/people/5/\", \r\n        \"https://swapi.co/api/people/6/\", \r\n        \"https://swapi.co/api/people/7/\", \r\n        \"https://swapi.co/api/people/9/\", \r\n        \"https://swapi.co/api/people/10/\", \r\n        \"https://swapi.co/api/people/11/\", \r\n        \"https://swapi.co/api/people/12/\", \r\n        \"https://swapi.co/api/people/14/\", \r\n        \"https://swapi.co/api/people/18/\", \r\n        \"https://swapi.co/api/people/19/\", \r\n        \"https://swapi.co/api/people/21/\", \r\n        \"https://swapi.co/api/people/22/\", \r\n        \"https://swapi.co/api/people/25/\", \r\n        \"https://swapi.co/api/people/26/\", \r\n        \"https://swapi.co/api/people/28/\", \r\n        \"https://swapi.co/api/people/29/\", \r\n        \"https://swapi.co/api/people/32/\", \r\n        \"https://swapi.co/api/people/34/\", \r\n        \"https://swapi.co/api/people/43/\", \r\n        \"https://swapi.co/api/people/51/\", \r\n        \"https://swapi.co/api/people/60/\", \r\n        \"https://swapi.co/api/people/61/\", \r\n        \"https://swapi.co/api/people/62/\", \r\n        \"https://swapi.co/api/people/66/\", \r\n        \"https://swapi.co/api/people/67/\", \r\n        \"https://swapi.co/api/people/68/\", \r\n        \"https://swapi.co/api/people/69/\", \r\n        \"https://swapi.co/api/people/74/\", \r\n        \"https://swapi.co/api/people/81/\", \r\n        \"https://swapi.co/api/people/84/\", \r\n        \"https://swapi.co/api/people/85/\", \r\n        \"https://swapi.co/api/people/86/\", \r\n        \"https://swapi.co/api/people/35/\"\r\n    ], \r\n    \"films\": [\r\n        \"https://swapi.co/api/films/2/\", \r\n        \"https://swapi.co/api/films/7/\", \r\n        \"https://swapi.co/api/films/5/\", \r\n        \"https://swapi.co/api/films/4/\", \r\n        \"https://swapi.co/api/films/6/\", \r\n        \"https://swapi.co/api/films/3/\", \r\n        \"https://swapi.co/api/films/1/\"\r\n    ], \r\n    \"created\": \"2014-12-10T13:52:11.567000Z\", \r\n    \"edited\": \"2015-04-17T06:59:55.850671Z\", \r\n    \"url\": \"https://swapi.co/api/species/1/\"\r\n}"
+      },
+      "Starship" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "model" : {
+            "type" : "string"
+          },
+          "manufacturer" : {
+            "type" : "string"
+          },
+          "cost_in_credits" : {
+            "type" : "string"
+          },
+          "length" : {
+            "type" : "string"
+          },
+          "max_atmosphering_speed" : {
+            "type" : "string"
+          },
+          "crew" : {
+            "type" : "string"
+          },
+          "passengers" : {
+            "type" : "string"
+          },
+          "cargo_capacity" : {
+            "type" : "string"
+          },
+          "consumables" : {
+            "type" : "string"
+          },
+          "hyperdrive_rating" : {
+            "type" : "string"
+          },
+          "MGLT" : {
+            "type" : "string"
+          },
+          "starship_class" : {
+            "type" : "string"
+          },
+          "pilots" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "films" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "created" : {
+            "type" : "string"
+          },
+          "edited" : {
+            "type" : "string"
+          },
+          "url" : {
+            "type" : "string"
+          }
+        },
+        "example" : "{\r\n    \"name\": \"Sentinel-class landing craft\", \r\n    \"model\": \"Sentinel-class landing craft\", \r\n    \"manufacturer\": \"Sienar Fleet Systems, Cyngus Spaceworks\", \r\n    \"cost_in_credits\": \"240000\", \r\n    \"length\": \"38\", \r\n    \"max_atmosphering_speed\": \"1000\", \r\n    \"crew\": \"5\", \r\n    \"passengers\": \"75\", \r\n    \"cargo_capacity\": \"180000\", \r\n    \"consumables\": \"1 month\", \r\n    \"hyperdrive_rating\": \"1.0\", \r\n    \"MGLT\": \"70\", \r\n    \"starship_class\": \"landing craft\", \r\n    \"pilots\": [], \r\n    \"films\": [\r\n        \"https://swapi.co/api/films/1/\"\r\n    ], \r\n    \"created\": \"2014-12-10T15:48:00.586000Z\", \r\n    \"edited\": \"2014-12-22T17:35:44.431407Z\", \r\n    \"url\": \"https://swapi.co/api/starships/5/\"\r\n}"
+      },
+      "Vehicle" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "model" : {
+            "type" : "string"
+          },
+          "manufacturer" : {
+            "type" : "string"
+          },
+          "cost_in_credits" : {
+            "type" : "string"
+          },
+          "length" : {
+            "type" : "string"
+          },
+          "max_atmosphering_speed" : {
+            "type" : "string"
+          },
+          "crew" : {
+            "type" : "string"
+          },
+          "passengers" : {
+            "type" : "string"
+          },
+          "cargo_capacity" : {
+            "type" : "string"
+          },
+          "consumables" : {
+            "type" : "string"
+          },
+          "vehicle_class" : {
+            "type" : "string"
+          },
+          "pilots" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "films" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "created" : {
+            "type" : "string"
+          },
+          "edited" : {
+            "type" : "string"
+          },
+          "url" : {
+            "type" : "string"
+          }
+        },
+        "example" : "{\r\n    \"name\": \"Sand Crawler\", \r\n    \"model\": \"Digger Crawler\", \r\n    \"manufacturer\": \"Corellia Mining Corporation\", \r\n    \"cost_in_credits\": \"150000\", \r\n    \"length\": \"36.8\", \r\n    \"max_atmosphering_speed\": \"30\", \r\n    \"crew\": \"46\", \r\n    \"passengers\": \"30\", \r\n    \"cargo_capacity\": \"50000\", \r\n    \"consumables\": \"2 months\", \r\n    \"vehicle_class\": \"wheeled\", \r\n    \"pilots\": [], \r\n    \"films\": [\r\n        \"https://swapi.co/api/films/5/\", \r\n        \"https://swapi.co/api/films/1/\"\r\n    ], \r\n    \"created\": \"2014-12-10T15:36:25.724000Z\", \r\n    \"edited\": \"2014-12-22T18:21:15.523587Z\", \r\n    \"url\": \"https://swapi.co/api/vehicles/4/\"\r\n}"
+      },
+      "Film" : {
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string"
+          },
+          "episode_id" : {
+            "type" : "number"
+          },
+          "opening_crawl" : {
+            "type" : "string"
+          },
+          "director" : {
+            "type" : "string"
+          },
+          "producer" : {
+            "type" : "string"
+          },
+          "release_date" : {
+            "type" : "string"
+          },
+          "characters" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "planets" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "starships" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "vehicles" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "species" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "created" : {
+            "type" : "string"
+          },
+          "edited" : {
+            "type" : "string"
+          },
+          "url" : {
+            "type" : "string"
+          }
+        },
+        "example" : "{\r\n    \"title\": \"A New Hope\", \r\n    \"episode_id\": 4, \r\n    \"opening_crawl\": \"It is a period of civil war.\\r\\nRebel spaceships, striking\\r\\nfrom a hidden base, have won\\r\\ntheir first victory against\\r\\nthe evil Galactic Empire.\\r\\n\\r\\nDuring the battle, Rebel\\r\\nspies managed to steal secret\\r\\nplans to the Empire's\\r\\nultimate weapon, the DEATH\\r\\nSTAR, an armored space\\r\\nstation with enough power\\r\\nto destroy an entire planet.\\r\\n\\r\\nPursued by the Empire's\\r\\nsinister agents, Princess\\r\\nLeia races home aboard her\\r\\nstarship, custodian of the\\r\\nstolen plans that can save her\\r\\npeople and restore\\r\\nfreedom to the galaxy....\", \r\n    \"director\": \"George Lucas\", \r\n    \"producer\": \"Gary Kurtz, Rick McCallum\", \r\n    \"release_date\": \"1977-05-25\", \r\n    \"characters\": [\r\n        \"https://swapi.co/api/people/1/\", \r\n        \"https://swapi.co/api/people/2/\", \r\n        \"https://swapi.co/api/people/3/\", \r\n        \"https://swapi.co/api/people/4/\", \r\n        \"https://swapi.co/api/people/5/\", \r\n        \"https://swapi.co/api/people/6/\", \r\n        \"https://swapi.co/api/people/7/\", \r\n        \"https://swapi.co/api/people/8/\", \r\n        \"https://swapi.co/api/people/9/\", \r\n        \"https://swapi.co/api/people/10/\", \r\n        \"https://swapi.co/api/people/12/\", \r\n        \"https://swapi.co/api/people/13/\", \r\n        \"https://swapi.co/api/people/14/\", \r\n        \"https://swapi.co/api/people/15/\", \r\n        \"https://swapi.co/api/people/16/\", \r\n        \"https://swapi.co/api/people/18/\", \r\n        \"https://swapi.co/api/people/19/\", \r\n        \"https://swapi.co/api/people/81/\"\r\n    ], \r\n    \"planets\": [\r\n        \"https://swapi.co/api/planets/2/\", \r\n        \"https://swapi.co/api/planets/3/\", \r\n        \"https://swapi.co/api/planets/1/\"\r\n    ], \r\n    \"starships\": [\r\n        \"https://swapi.co/api/starships/2/\", \r\n        \"https://swapi.co/api/starships/3/\", \r\n        \"https://swapi.co/api/starships/5/\", \r\n        \"https://swapi.co/api/starships/9/\", \r\n        \"https://swapi.co/api/starships/10/\", \r\n        \"https://swapi.co/api/starships/11/\", \r\n        \"https://swapi.co/api/starships/12/\", \r\n        \"https://swapi.co/api/starships/13/\"\r\n    ], \r\n    \"vehicles\": [\r\n        \"https://swapi.co/api/vehicles/4/\", \r\n        \"https://swapi.co/api/vehicles/6/\", \r\n        \"https://swapi.co/api/vehicles/7/\", \r\n        \"https://swapi.co/api/vehicles/8/\"\r\n    ], \r\n    \"species\": [\r\n        \"https://swapi.co/api/species/5/\", \r\n        \"https://swapi.co/api/species/3/\", \r\n        \"https://swapi.co/api/species/2/\", \r\n        \"https://swapi.co/api/species/1/\", \r\n        \"https://swapi.co/api/species/4/\"\r\n    ], \r\n    \"created\": \"2014-12-10T14:23:31.880000Z\", \r\n    \"edited\": \"2015-04-11T09:46:52.774897Z\", \r\n    \"url\": \"https://swapi.co/api/films/1/\"\r\n}"
+      }
+    }
+  }
+}
