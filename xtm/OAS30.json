@@ -1,0 +1,4884 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "XTM REST API",
+    "description" : "XTM has SOAP and REST APIs that are public-facing. The XTM functionality covered by the two APIs is different. This document describes the REST API methods. You can find more information about the SOAP API at https://xtm-intl.com/api/. \n\nThe API methods described in this document mostly return HTTP code with body content in JSON format. When the response format is different, it is clearly indicated in the description. Obligatory fields are marked as Required.\n\nFor support with the REST API please send an e-mail to support@xtm-intl.com.",
+    "contact" : { },
+    "version" : "11.5"
+  },
+  "servers" : [ {
+    "url" : "https://www.xtm-cloud.com/project-manager-api-rest"
+  } ],
+  "paths" : {
+    "/auth/token" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Generate token",
+        "description" : "Tokens are generated based on user credentials that must include client name, user ID and user password.",
+        "operationId" : "generateTokenUsingPOST",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RSTokenGenerateRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Authorization response."
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/concordance" : {
+      "get" : {
+        "tags" : [ "Concordance" ],
+        "summary" : "Obtain concordance that match specific criteria",
+        "description" : "This method returns concordance that match the specified search parameters.",
+        "operationId" : "findConcordanceUsingGET",
+        "parameters" : [ {
+          "name" : "phrase",
+          "in" : "query",
+          "required" : true,
+          "description" : "Search phrase.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Search phrase."
+          }
+        }, {
+          "name" : "searchIn",
+          "in" : "query",
+          "required" : true,
+          "description" : "Resource to search in.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Resource to search in.",
+            "enum" : [ "SOURCE", "TARGET" ]
+          }
+        }, {
+          "name" : "sourceLanguage",
+          "in" : "query",
+          "required" : true,
+          "description" : "Source language code. See [API resources](#tag/References) for full list of available codes.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Source language code. See [API resources](#tag/References) for full list of available codes."
+          }
+        }, {
+          "name" : "targetLanguage",
+          "in" : "query",
+          "required" : true,
+          "description" : "Target language code. See [API resources](#tag/References) for full list of available codes.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Target language code. See [API resources](#tag/References) for full list of available codes."
+          }
+        }, {
+          "name" : "customerIds",
+          "in" : "query",
+          "description" : "Customer IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Customer IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "exactMatch",
+          "in" : "query",
+          "description" : "EXACT - only returns results that consist exactly of the words in the search phrase. The order of words, punctuation and spaces have to be the same.\n\nYES - performs a phrase search. Returns results that include the same words in the same order.\n\nNO - performs a broad search. Returns results that include any of the words in the search phrase.",
+          "schema" : {
+            "type" : "string",
+            "description" : "EXACT - only returns results that consist exactly of the words in the search phrase. The order of words, punctuation and spaces have to be the same.\n\nYES - performs a phrase search. Returns results that include the same words in the same order.\n\nNO - performs a broad search. Returns results that include any of the words in the search phrase.",
+            "default" : "NO",
+            "enum" : [ "YES", "NO", "EXACT" ]
+          }
+        }, {
+          "name" : "languageVariants",
+          "in" : "query",
+          "description" : "Enables/disables searching in all language variants instead of exact language.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Enables/disables searching in all language variants instead of exact language.",
+            "default" : "NO",
+            "enum" : [ "YES", "NO" ]
+          }
+        }, {
+          "name" : "reverseMemory",
+          "in" : "query",
+          "description" : "Enables/disables searching in reverse memory.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Enables/disables searching in reverse memory.",
+            "default" : "NO",
+            "enum" : [ "YES", "NO" ]
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Concordance segment."
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers" : {
+      "get" : {
+        "tags" : [ "Customers" ],
+        "summary" : "Obtain customers that match specific criteria",
+        "description" : "This method returns customers that match the specified search parameters.",
+        "operationId" : "getCustomersUsingGET",
+        "parameters" : [ {
+          "name" : "activity",
+          "in" : "query",
+          "description" : "Customer activity.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Customer activity.",
+            "default" : "ONLY_ACTIVE",
+            "enum" : [ "ONLY_ACTIVE", "ALL" ]
+          }
+        }, {
+          "name" : "fetchAddress",
+          "in" : "query",
+          "description" : "Decision if Address data should be fetched.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Decision if Address data should be fetched.",
+            "default" : "NO",
+            "enum" : [ "YES", "NO" ]
+          }
+        }, {
+          "name" : "ids",
+          "in" : "query",
+          "description" : "Customer IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Customer IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "names",
+          "in" : "query",
+          "description" : "Customer names.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Customer names.",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/RSFindCustomerResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects" : {
+      "get" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Obtain projects that match specific criteria",
+        "description" : "This method returns projects that match the specified search parameters.",
+        "operationId" : "getProjectsUsingGET",
+        "parameters" : [ {
+          "name" : "customerIds",
+          "in" : "query",
+          "description" : "IDs of customers.",
+          "schema" : {
+            "type" : "array",
+            "description" : "IDs of customers.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "ids",
+          "in" : "query",
+          "description" : "IDs of projects.",
+          "schema" : {
+            "type" : "array",
+            "description" : "IDs of projects.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "Page number.",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "Page number."
+          }
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "Number of projects listed on page.",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "Number of projects listed on page."
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Project status.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Project status.",
+            "enum" : [ "NOT_STARTED", "STARTED", "FINISHED" ]
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "headers" : {
+              "xtm-page" : {
+                "description" : "Returns the currently displayed page number.",
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32",
+                  "description" : "Returns the currently displayed page number."
+                }
+              },
+              "xtm-page-items-count" : {
+                "description" : "Returns the number of projects listed on the currently displayed page.",
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32",
+                  "description" : "Returns the number of projects listed on the currently displayed page."
+                }
+              },
+              "xtm-page-size" : {
+                "description" : "Returns the number of projects that can be listed on the currently displayed page.",
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32",
+                  "description" : "Returns the number of projects that can be listed on the currently displayed page."
+                }
+              },
+              "xtm-total-items-count" : {
+                "description" : "Returns the number of projects matching the criteria.",
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32",
+                  "description" : "Returns the number of projects matching the criteria."
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/RSProjectResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Create project",
+        "description" : "This method creates a new project.\n\nAll requests must include customerId and name. In addition to these two parameters, a valid project creation request must either include sourceLanguage, targetLanguages and workflowId or templateId of an existing template that specifies a workflow definition and the source and target languages.\n\nContent in the request body must be multipart/form-data.",
+        "operationId" : "createProjectUsingPOST",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "customerId", "name" ],
+                "properties" : {
+                  "customerId" : {
+                    "type" : "integer",
+                    "format" : "int64",
+                    "description" : "ID of customer."
+                  },
+                  "name" : {
+                    "type" : "string",
+                    "description" : "Name for project."
+                  },
+                  "analysisTemplateId" : {
+                    "type" : "string",
+                    "description" : "ID of analysis template that can be used to specify project analysis settings."
+                  },
+                  "callbacks.analysisFinishedCallback" : {
+                    "type" : "string",
+                    "description" : "Specifies link to call when project analysis is finished. [Open example of this JSON callback.](https://xtm.cloud/api-examples/analysis-finished-callback.txt)"
+                  },
+                  "callbacks.jobFinishedCallback" : {
+                    "type" : "string",
+                    "description" : "Specifies link to call when processing of one file in a single language combination is finished for the entire project."
+                  },
+                  "callbacks.projectFinishedCallback" : {
+                    "type" : "string",
+                    "description" : "Specifies link to call when processing of processing of the entire project is finished."
+                  },
+                  "callbacks.workflowTransitionCallback" : {
+                    "type" : "string",
+                    "description" : "Specifies link to call when any workflow transition even has occurred. [Open example of this JSON callback.](https://xtm.cloud/api-examples/workflow-transition-callback.txt)"
+                  },
+                  "description" : {
+                    "type" : "string",
+                    "description" : "Description for project."
+                  },
+                  "dueDate" : {
+                    "type" : "string",
+                    "description" : "Due date for project in ISO-8601 date format."
+                  },
+                  "fileProcessType" : {
+                    "type" : "string",
+                    "description" : "Value 'JOIN' enables joining files by extension.",
+                    "enum" : [ "JOIN" ]
+                  },
+                  "newSourceLanguage" : {
+                    "type" : "string",
+                    "description" : "New source (preprocessing) language code, see [API resources](#tag/References) for full list of available language codes."
+                  },
+                  "newSourceWorkflowId" : {
+                    "type" : "integer",
+                    "format" : "int64",
+                    "description" : "ID of workflow definition for new source language (preprocessing)."
+                  },
+                  "newSourceWorkflowName" : {
+                    "type" : "string",
+                    "description" : "Name of workflow definition for new source language (preprocessing)."
+                  },
+                  "referenceFiles[0].file" : {
+                    "type" : "string",
+                    "format" : "binary",
+                    "description" : "Specifies file that will be added to project as reference."
+                  },
+                  "referenceFiles[0].name" : {
+                    "type" : "string",
+                    "description" : "Changes name of reference file."
+                  },
+                  "referenceId" : {
+                    "type" : "string",
+                    "description" : "ID that can be used for reference. Reference ID is for users to track projects more conveniently."
+                  },
+                  "sourceLanguage" : {
+                    "type" : "string",
+                    "description" : "Source language code, see [API resources](#tag/References) for full list of available language codes."
+                  },
+                  "targetLanguages" : {
+                    "type" : "array",
+                    "description" : "Target languages codes. See [API resources](#tag/References) for full list of available language codes.",
+                    "items" : {
+                      "type" : "string"
+                    }
+                  },
+                  "templateId" : {
+                    "type" : "integer",
+                    "format" : "int64",
+                    "description" : "ID of template that can be used to specify project setting when creating project."
+                  },
+                  "translationFiles[0].file" : {
+                    "type" : "string",
+                    "format" : "binary",
+                    "description" : "Specifies file for translation."
+                  },
+                  "translationFiles[0].name" : {
+                    "type" : "string",
+                    "description" : "Changes name of file for translation."
+                  },
+                  "workflowId" : {
+                    "type" : "integer",
+                    "format" : "int64",
+                    "description" : "ID of main workflow definition."
+                  },
+                  "workflowName" : {
+                    "type" : "string",
+                    "description" : "Specifies name of main workflow definition."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Project successfully created.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectCreationResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/analysis-templates" : {
+      "get" : {
+        "tags" : [ "Project templates" ],
+        "summary" : "Obtain project analysis templates that match specific criteria",
+        "description" : "This method returns project analysis templates that match the specified search parameters.",
+        "operationId" : "getAnalysisTemplatesUsingGET",
+        "parameters" : [ {
+          "name" : "customerIds",
+          "in" : "query",
+          "description" : "IDs of customers.",
+          "schema" : {
+            "type" : "array",
+            "description" : "IDs of customers.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/RSProjectAnalysisTemplateResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/templates" : {
+      "get" : {
+        "tags" : [ "Project templates" ],
+        "summary" : "Obtain project templates that match specific criteria",
+        "description" : "This method returns project templates that match the specified search parameters.",
+        "operationId" : "getTemplatesUsingGET",
+        "parameters" : [ {
+          "name" : "customerIds",
+          "in" : "query",
+          "description" : "IDs of customers.",
+          "schema" : {
+            "type" : "array",
+            "description" : "IDs of customers.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "ids",
+          "in" : "query",
+          "description" : "IDs of templates.",
+          "schema" : {
+            "type" : "array",
+            "description" : "IDs of templates.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "scope",
+          "in" : "query",
+          "description" : "Scope of templates.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Scope of templates.",
+            "default" : "ALL",
+            "enum" : [ "ALL", "GLOBAL", "CUSTOMERS" ]
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/RSProjectTemplateResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{projectId}" : {
+      "delete" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Delete project",
+        "description" : "This method deletes a project. Projects can be deleted with or without the TM created from the project.",
+        "operationId" : "deleteProjectUsingDELETE",
+        "parameters" : [ {
+          "name" : "option",
+          "in" : "query",
+          "description" : "Type of project deletion.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Type of project deletion.",
+            "default" : "DELETE_LEAVING_TM",
+            "enum" : [ "DELETE_WITH_TM", "DELETE_LEAVING_TM" ]
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectDeletionResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/analysis" : {
+      "get" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Obtain status of analysis",
+        "description" : "This method returns information about the project analysis status.",
+        "operationId" : "checkProjectAnalysisCompletionUsingGET",
+        "parameters" : [ {
+          "name" : "fetchLevel",
+          "in" : "query",
+          "description" : "Fetch level of analysis status.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Fetch level of analysis status.",
+            "enum" : [ "JOBS" ]
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectAnalysisResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/deactivate" : {
+      "post" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Cancel project",
+        "description" : "This method cancels processing of a project.",
+        "operationId" : "deactivateProjectUsingPOST",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectDeactivateResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/due-dates" : {
+      "put" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Update due dates",
+        "description" : "This method updates due dates for jobs, workflow steps, target languages or the entire project. If any of the due dates to be set is in the wrong format, the request will not be executed. When a new due date is not specified for a job/workflow step/target language, the existing due date will be reset, resulting in no due date set for the objects. When projectDueDate is empty in the request, the due date of the project will not be changed.",
+        "operationId" : "updateDueDatesUsingPUT",
+        "parameters" : [ {
+          "name" : "targetLanguages",
+          "in" : "query",
+          "description" : "Target languages codes. See [API resources](#tag/References) for full list of available codes. This parameter affect only on steps list.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Target languages codes. See [API resources](#tag/References) for full list of available codes. This parameter affect only on steps list.",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RSProjectDueDateUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectDueDateUpdateResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden operation.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/files/download" : {
+      "get" : {
+        "tags" : [ "Project files" ],
+        "summary" : "Download project files",
+        "description" : "This method downloads project files which can include files for offline translation, target files, PDF previews, different kinds of Excel reports and LQA results.\n\nThe following types of files can be downloaded with the PROJECT value of the fileScope parameter: TIPP, LQA_REPORT, LQA_EXTENDED_TABLE_REPORT, MULTI_EXCEL, PDF, PDF_COLOURED_BY_MATCH_RATE, PDF_COLOURED_BY_XLIFF_DOC_STATUS.\n\nIn order to download any other type of file, the fileScope parameter must be set to JOB. In such case, PROJECT fileScope value specifies that a single file will be downloaded, whereas JOB fileScope value specifies that there will be multiple files, one for each job covered by the request.\n\nWhen files generated for the entire project are requested for download, then the responses do not include job IDs.\n\nThe response is generated in the application/octet-stream format as a ZIP file.\n",
+        "operationId" : "downloadFilesUsingGET",
+        "parameters" : [ {
+          "name" : "fileScope",
+          "in" : "query",
+          "required" : true,
+          "description" : "Type of files scope.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Type of files scope.",
+            "default" : "JOB",
+            "enum" : [ "PROJECT", "JOB" ]
+          }
+        }, {
+          "name" : "fileType",
+          "in" : "query",
+          "required" : true,
+          "description" : "Type of requested file download.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Type of requested file download.",
+            "enum" : [ "TARGET", "XLIFF", "QA_REPORT", "HTML", "HTML_TABLE", "PDF", "PDF_TABLE", "TIPP", "HTML_EXTENDED_TABLE", "HTML_COLOURED", "PDF_EXTENDED_TABLE", "PDF_COLOURED", "PDF_COLOURED_BY_XLIFF_DOC_STATUS", "PDF_COLOURED_BY_MATCH_RATE", "TARGET_COLOURED_BY_MATCH_RATE", "TARGET_COLOURED_BY_XLIFF_DOC_STATUS", "XLIFF_DOC", "LQA_REPORT", "LQA_EXTENDED_TABLE_REPORT", "TARGET_PSEUDO", "MULTI_EXCEL" ]
+          }
+        }, {
+          "name" : "fileIds",
+          "in" : "query",
+          "description" : "File IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "File IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "jobIds",
+          "in" : "query",
+          "description" : "Job IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Job IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "targetLanguages",
+          "in" : "query",
+          "description" : "Target languages codes. See [API resources](#tag/References) for full list of available codes.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Target languages codes. See [API resources](#tag/References) for full list of available codes.",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed."
+          },
+          "400" : {
+            "description" : "Bad request."
+          },
+          "401" : {
+            "description" : "Authentication failed."
+          },
+          "500" : {
+            "description" : "Internal server error."
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/files/generate" : {
+      "post" : {
+        "tags" : [ "Project files" ],
+        "summary" : "Generate specific files",
+        "description" : "Generates project files. Files can be generated for the whole project or a specified scope.\n\nFiles that can be generated for the entire project or language include:  TIPP, LQA_REPORT, LQA_EXTENDED_TABLE_REPORT, MULTI_EXCEL, PDF, PDF_COLOURED_BY_MATCH_RATE, PDF_COLOURED_BY_XLIFF_DOC_STATUS.\n\nThe targetLanguage parameter only specifies files that will be generated for a project and is not used for generating files based on jobIds.\n\nWhen files are generated for a specific scope, then the jobIds parameter must be used. In such case, any type of file listed under fileTypes values can be generated with the exception of MULTI_EXCEL.\n\nGenerated files can be identified by their unique IDs.",
+        "operationId" : "generateFilesUsingPOST",
+        "parameters" : [ {
+          "name" : "fileType",
+          "in" : "query",
+          "required" : true,
+          "description" : "Type of requested file generation.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Type of requested file generation.",
+            "enum" : [ "TARGET", "XLIFF", "QA_REPORT", "HTML", "HTML_TABLE", "PDF", "PDF_TABLE", "TIPP", "HTML_EXTENDED_TABLE", "HTML_COLOURED", "PDF_EXTENDED_TABLE", "PDF_COLOURED", "PDF_COLOURED_BY_XLIFF_DOC_STATUS", "PDF_COLOURED_BY_MATCH_RATE", "TARGET_COLOURED_BY_MATCH_RATE", "TARGET_COLOURED_BY_XLIFF_DOC_STATUS", "XLIFF_DOC", "LQA_REPORT", "LQA_EXTENDED_TABLE_REPORT", "TARGET_PSEUDO", "MULTI_EXCEL" ]
+          }
+        }, {
+          "name" : "jobIds",
+          "in" : "query",
+          "description" : "Job IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Job IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "targetLanguage",
+          "in" : "query",
+          "description" : "Target language code, see [API resources](#tag/References) for full list of available codes.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Target language code, see [API resources](#tag/References) for full list of available codes."
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/RSProjectFileGenerateResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project or job not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/files/status" : {
+      "get" : {
+        "tags" : [ "Project files" ],
+        "summary" : "Obtain status of generated files",
+        "description" : "Returns information about the status of generated files.",
+        "operationId" : "filesStatusUsingGET",
+        "parameters" : [ {
+          "name" : "fileScope",
+          "in" : "query",
+          "required" : true,
+          "description" : "Type of files scope.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Type of files scope.",
+            "default" : "JOB",
+            "enum" : [ "PROJECT", "JOB" ]
+          }
+        }, {
+          "name" : "fileIds",
+          "in" : "query",
+          "description" : "File IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "File IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "fileType",
+          "in" : "query",
+          "description" : "Type of requested file status.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Type of requested file status.",
+            "enum" : [ "TARGET", "XLIFF", "QA_REPORT", "HTML", "HTML_TABLE", "PDF", "PDF_TABLE", "TIPP", "HTML_EXTENDED_TABLE", "HTML_COLOURED", "PDF_EXTENDED_TABLE", "PDF_COLOURED", "PDF_COLOURED_BY_XLIFF_DOC_STATUS", "PDF_COLOURED_BY_MATCH_RATE", "TARGET_COLOURED_BY_MATCH_RATE", "TARGET_COLOURED_BY_XLIFF_DOC_STATUS", "XLIFF_DOC", "LQA_REPORT", "LQA_EXTENDED_TABLE_REPORT", "TARGET_PSEUDO", "MULTI_EXCEL" ]
+          }
+        }, {
+          "name" : "jobIds",
+          "in" : "query",
+          "description" : "Job IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Job IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "targetLanguages",
+          "in" : "query",
+          "description" : "Target languages codes. See [API resources](#tag/References) for full list of available codes.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Target languages codes. See [API resources](#tag/References) for full list of available codes.",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/RSProjectFileStatusResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/files/upload" : {
+      "post" : {
+        "tags" : [ "Project files" ],
+        "summary" : "Upload files to project",
+        "description" : "Uploads source files for a project.\n\nContent in the request body has to be multipart/form-data.",
+        "operationId" : "uploadFilesUsingPOST",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "required" : [ "files[0].file" ],
+                "properties" : {
+                  "files[0].file" : {
+                    "type" : "string",
+                    "format" : "binary",
+                    "description" : "Uploads source file to project."
+                  },
+                  "files[0].name" : {
+                    "type" : "string",
+                    "description" : "Changes name of source file uploaded to project."
+                  },
+                  "matchType" : {
+                    "type" : "string",
+                    "description" : "When \"MATCH_NAMES\" is used, the source file uploaded to a project will be replaced with the new one.\n\nWhen \"NO_MATCH\" is used, the source file uploaded to a project will be added and renamed, if there is already a file with the same name.",
+                    "default" : "NO_MATCH",
+                    "enum" : [ "MATCH_NAMES", "NO_MATCH" ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectFileUploadResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden operation.",
+            "headers" : {
+              "Location" : {
+                "description" : "Points a resource with additional data of forbidden reason.",
+                "schema" : {
+                  "type" : "string",
+                  "description" : "Points a resource with additional data of forbidden reason."
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/files/{fileId}/download" : {
+      "get" : {
+        "tags" : [ "Project files" ],
+        "summary" : "Download project file",
+        "description" : "This method downloads a single, generated project file based on its ID.\n\nThe response is generated in the application/octet-stream format as a ZIP file. ",
+        "operationId" : "downloadFileUsingGET",
+        "parameters" : [ {
+          "name" : "fileScope",
+          "in" : "query",
+          "required" : true,
+          "description" : "Type of files scope.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Type of files scope.",
+            "default" : "JOB",
+            "enum" : [ "PROJECT", "JOB" ]
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed."
+          },
+          "400" : {
+            "description" : "Bad request."
+          },
+          "401" : {
+            "description" : "Authentication failed."
+          },
+          "500" : {
+            "description" : "Internal server error."
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "fileId",
+        "in" : "path",
+        "required" : true,
+        "description" : "File ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "File ID."
+        }
+      }, {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/files/{fileId}/status" : {
+      "get" : {
+        "tags" : [ "Project files" ],
+        "summary" : "Obtain status of generated file",
+        "description" : "This method returns the status of a generated file.",
+        "operationId" : "fileStatusUsingGET",
+        "parameters" : [ {
+          "name" : "fileScope",
+          "in" : "query",
+          "required" : true,
+          "description" : "Type of files scope.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Type of files scope.",
+            "default" : "JOB",
+            "enum" : [ "PROJECT", "JOB" ]
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectFileStatusResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "fileId",
+        "in" : "path",
+        "required" : true,
+        "description" : "File ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "File ID."
+        }
+      }, {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/jobs/cancel" : {
+      "post" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Cancel jobs",
+        "description" : "This method cancels processing of jobs without removing them from the project.",
+        "operationId" : "cancelJobUsingPOST",
+        "parameters" : [ {
+          "name" : "jobIds",
+          "in" : "query",
+          "required" : true,
+          "description" : "Job IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Job IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectJobCancelResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/links/project-editor" : {
+      "post" : {
+        "tags" : [ "Project links" ],
+        "summary" : "Obtain link to a Project Editor",
+        "description" : "This method generates link to the Project Editor of given project.",
+        "operationId" : "generateProjectEditorLinkUsingPOST",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RSProjectEditorLinkRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectEditorLinkResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/metrics" : {
+      "get" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Obtain metrics that match specific criteria",
+        "description" : "This method returns metrics for a single or multiple target languages. Project metrics list all the different types of matches with corresponding segment, word and character counts. Metrics are divided by languages and jobs, and include data about progress of each job in each workflow step. See [API resources](#tag/References) for explanation of match types.",
+        "operationId" : "findProjectMetricsUsingGET",
+        "parameters" : [ {
+          "name" : "targetLanguages",
+          "in" : "query",
+          "description" : "Target language code, see [API resources](#tag/References) for full list of available codes.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Target language code, see [API resources](#tag/References) for full list of available codes.",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/RSLanguageMetricsResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/metrics/jobs" : {
+      "get" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Obtain job metrics that match specific criteria",
+        "description" : "This method returns metrics for a single or multiple jobs in a project. Job metrics list all the different types of matches with corresponding segment, word and character counts, and are divided into workflow steps.See [API resources](#tag/References) for explanation of match types.",
+        "operationId" : "findJobsMetricsUsingGET",
+        "parameters" : [ {
+          "name" : "jobIds",
+          "in" : "query",
+          "required" : true,
+          "description" : "Job IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Job IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/RSJobMetricsResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/proposal" : {
+      "get" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Obtain project estimates",
+        "description" : "This method returns estimates for a specified project.",
+        "operationId" : "findProposalUsingGET",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Project estimates."
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/statistics" : {
+      "get" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Obtain statistics that match specific criteria",
+        "description" : "This method returns statistics for a single or multiple target languages. Project statistics list all the different types of matches processed by users in jobs divided by workflow steps. The method returns source and target statistics. Source statics are calculated as the number of words or characters processed compared to the source text. Target statics represent the number of the resultant words or characters. See [API resources](#tag/References) for explanation of match types.",
+        "operationId" : "findProjectStatisticsUsingGET",
+        "parameters" : [ {
+          "name" : "targetLanguages",
+          "in" : "query",
+          "description" : "Target language code, see [API resources](#tag/References) for full list of available codes.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Target language code, see [API resources](#tag/References) for full list of available codes.",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Project statistics."
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/status" : {
+      "get" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Obtain project status",
+        "description" : "This method returns the status of a specified project. There are three levels of response: project, jobs and workflow steps.\n\nWhen the fetchLevel parameter is not set, only the project status is returned.\n\nWhen the fetchLevel parameter is set to **JOBS**, the project status is returned together with individual statuses for all jobs.\n\nWhen the fetchLevel parameter is set to **STEPS**, the project status is returned together with individual statuses for all jobs and their active workflow steps.",
+        "operationId" : "checkProjectStatusesUsingGET",
+        "parameters" : [ {
+          "name" : "fetchLevel",
+          "in" : "query",
+          "description" : "Fetch level of statuses.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Fetch level of statuses.",
+            "enum" : [ "JOBS", "STEPS" ]
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectStatusResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/target-languages" : {
+      "post" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Add target languages",
+        "description" : "This method adds new target languages to project.",
+        "operationId" : "addTargetLanguagesUsingPOST",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RSProjectTargetLanguagesAddRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectTargetLanguagesAddResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/workflow/finish" : {
+      "post" : {
+        "tags" : [ "Project workflows" ],
+        "summary" : "Move jobs to next workflow step",
+        "description" : "This method finishes active workflow steps and moves jobs to the next step. This happens regardless of whether the jobs are all in the same step or different workflow steps.\n\nWhen job Ids are specified, only the specified jobs are moved forward. When job Ids are not specified, all jobs are moved forward in the workflow.",
+        "operationId" : "finishWorkflowUsingPOST",
+        "parameters" : [ {
+          "name" : "jobIds",
+          "in" : "query",
+          "description" : "Job IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Job IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "mailing",
+          "in" : "query",
+          "description" : "Specifies whether email notifications will be sent when an action has been completed.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Specifies whether email notifications will be sent when an action has been completed.",
+            "default" : "ENABLED",
+            "enum" : [ "ENABLED", "DISABLED" ]
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectWorkflowFinishResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/workflow/reject" : {
+      "post" : {
+        "tags" : [ "Project workflows" ],
+        "summary" : "Move jobs to previous workflow step",
+        "description" : "This method moves jobs from the active workflow step to the previous one.",
+        "operationId" : "rejectWorkflowUsingPOST",
+        "parameters" : [ {
+          "name" : "jobIds",
+          "in" : "query",
+          "description" : "Job IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Job IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "mailing",
+          "in" : "query",
+          "description" : "Specifies whether email notifications will be sent when an action has been completed.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Specifies whether email notifications will be sent when an action has been completed.",
+            "default" : "ENABLED",
+            "enum" : [ "ENABLED", "DISABLED" ]
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectWorkflowRejectResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/projects/{projectId}/workflow/start" : {
+      "post" : {
+        "tags" : [ "Project workflows" ],
+        "summary" : "Start workflow in project",
+        "description" : "This method activates the first workflow step for all the jobs in the project. The translators can then start their tasks.",
+        "operationId" : "startWorkflowUsingPOST",
+        "parameters" : [ {
+          "name" : "jobIds",
+          "in" : "query",
+          "description" : "Job IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Job IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "targetLanguages",
+          "in" : "query",
+          "description" : "Target languages codes. See [API resources](#tag/References) for full list of available codes.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Target languages codes. See [API resources](#tag/References) for full list of available codes.",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSProjectWorkflowStartResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Project not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "name" : "projectId",
+        "in" : "path",
+        "required" : true,
+        "description" : "Project ID.",
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Project ID."
+        }
+      } ]
+    },
+    "/system" : {
+      "get" : {
+        "tags" : [ "System" ],
+        "summary" : "Obtain system details",
+        "description" : "This method returns the company name, logo, XTM version and website address.",
+        "operationId" : "getXTMInfoUsingGET",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSSystemInfoResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users" : {
+      "get" : {
+        "tags" : [ "Users" ],
+        "summary" : "Obtain users that match specific criteria",
+        "description" : "This method returns users that match the specified search parameters.",
+        "operationId" : "getUsersUsingGET",
+        "parameters" : [ {
+          "name" : "ids",
+          "in" : "query",
+          "description" : "User IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "User IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "usernames",
+          "in" : "query",
+          "description" : "Usernames.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Usernames.",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "name" : "fetchAddress",
+          "in" : "query",
+          "description" : "Decision if address details should be fetched.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Decision if address details should be fetched.",
+            "default" : "NO",
+            "enum" : [ "YES", "NO" ]
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/RSFindUserResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workflows" : {
+      "get" : {
+        "tags" : [ "Workflows" ],
+        "summary" : "Obtain workflows that match specific criteria",
+        "description" : "This method returns workflows that match the specified search parameters.",
+        "operationId" : "findWorkflowsUsingGET",
+        "parameters" : [ {
+          "name" : "ids",
+          "in" : "query",
+          "description" : "Workflow IDs.",
+          "schema" : {
+            "type" : "array",
+            "description" : "Workflow IDs.",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "Name of workflow definition.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Name of workflow definition."
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "required" : true,
+          "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method.",
+          "schema" : {
+            "type" : "string",
+            "description" : "The request must contain the following header: \"**Authorization: XTM-Basic XXXXX**\" where XXXXX stands for your token. If you do not have a token, obtain it using the authentication method."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operation completed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/RSWorkflowResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authentication failed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RSErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Address information." : {
+        "type" : "object",
+        "properties" : {
+          "address1" : {
+            "type" : "string",
+            "description" : "Address part 1."
+          },
+          "address2" : {
+            "type" : "string",
+            "description" : "Address part 2."
+          },
+          "city" : {
+            "type" : "string",
+            "description" : "City."
+          },
+          "country" : {
+            "type" : "string",
+            "description" : "Country 3-letter code.",
+            "enum" : [ "AFG", "ALB", "DZA", "ASM", "AND", "AGO", "AIA", "ATA", "ATG", "ARG", "ARM", "ABW", "AUS", "AUT", "AZE", "BHS", "BHR", "BGD", "BRB", "BLR", "BEL", "BLZ", "BEN", "BMU", "BTN", "BOL", "BIH", "BWA", "BRA", "VGB", "BRN", "BGR", "BFA", "BDI", "KHM", "CMR", "CAN", "CPV", "CYM", "CAF", "TCD", "CHL", "CHN", "CXR", "CCK", "COL", "COM", "COK", "CRI", "HRV", "CUB", "CYP", "CZE", "COG", "DNK", "DJI", "DMA", "DOM", "ECU", "EGY", "SLV", "GNQ", "ERI", "EST", "ETH", "FRO", "FLK", "FJI", "FIN", "FRA", "GUF", "PYF", "GAB", "GMB", "GEO", "DEU", "GHA", "GIB", "GRC", "GRL", "GRD", "GLP", "GUM", "GTM", "GIN", "GNB", "GUY", "HTI", "HND", "HKG", "HUN", "ISL", "IND", "IDN", "IRN", "IRQ", "IRL", "ISR", "ITA", "CIV", "JAM", "JPN", "JOR", "KAZ", "KEN", "KIR", "KWT", "KGZ", "LAO", "LVA", "LBN", "LSO", "LBR", "LBY", "LIE", "LTU", "LUX", "MAC", "MKD", "MDG", "MWI", "MYS", "MDV", "MLI", "MLT", "MHL", "MTQ", "MRT", "MUS", "MYT", "MEX", "FSM", "MDA", "MCO", "MNG", "MNE", "MSR", "MAR", "MOZ", "MMR", "NAM", "NRU", "NPL", "NLD", "ANT", "NCL", "NZL", "NIC", "NER", "NGA", "NIU", "NFK", "PRK", "NOR", "OMN", "PAK", "PLW", "PSE", "PAN", "PNG", "PRY", "PER", "PHL", "POL", "PRT", "PRI", "QAT", "COD", "REU", "ROU", "RUS", "RWA", "SMR", "STP", "SAU", "SEN", "SRB", "SYC", "SLE", "SGP", "SVK", "SVN", "SLB", "SOM", "ZAF", "KOR", "ESP", "LKA", "SHN", "KNA", "LCA", "SPM", "VCT", "SDN", "SUR", "SWZ", "SWE", "CHE", "SYR", "TWN", "TJK", "TZA", "THA", "TGO", "TON", "TTO", "TUN", "TUR", "TKM", "TCA", "TUV", "UGA", "UKR", "ARE", "GBR", "USA", "URY", "UZB", "VUT", "VAT", "VEN", "VNM", "WLF", "ESH", "YEM", "ZMB", "ZWE" ]
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "Email address."
+          },
+          "mobilePhone" : {
+            "type" : "string",
+            "description" : "Mobile phone number."
+          },
+          "phone" : {
+            "type" : "string",
+            "description" : "Phone number."
+          },
+          "postCode" : {
+            "type" : "string",
+            "description" : "Post code."
+          },
+          "state" : {
+            "type" : "string",
+            "description" : "State."
+          },
+          "vatNumber" : {
+            "type" : "string",
+            "description" : "VAT number."
+          },
+          "website" : {
+            "type" : "string",
+            "description" : "Website url."
+          }
+        }
+      },
+      "Authorization response." : {
+        "type" : "object",
+        "properties" : {
+          "token" : {
+            "type" : "string",
+            "description" : "Authentication token."
+          }
+        }
+      },
+      "Concordance segment." : {
+        "type" : "object",
+        "properties" : {
+          "changeDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "Segment change date in timestamp."
+          },
+          "changedByUserId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "ID of user who modify segment."
+          },
+          "changedByUsername" : {
+            "type" : "string",
+            "description" : "Username of user who modify segment."
+          },
+          "context" : {
+            "type" : "array",
+            "description" : "Context details.",
+            "items" : {
+              "$ref" : "#/components/schemas/SegmentContextInformation"
+            }
+          },
+          "createDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "Segment create date in timestamp."
+          },
+          "createdByUserId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Creator ID."
+          },
+          "createdByUsername" : {
+            "type" : "string",
+            "description" : "Creator username."
+          },
+          "fileName" : {
+            "type" : "string",
+            "description" : "File name."
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Segment ID."
+          },
+          "segmentId" : {
+            "type" : "string",
+            "description" : "Segment ID base matching ID."
+          },
+          "sourceLanguage" : {
+            "type" : "string",
+            "description" : "Source language code. See [API resources](#tag/References) for full list of available codes.",
+            "example" : "en_GB"
+          },
+          "sourceText" : {
+            "type" : "string",
+            "description" : "Segment source text."
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Segment approving status.",
+            "enum" : [ "APPROVED", "NOT_APPROVED" ]
+          },
+          "tags" : {
+            "type" : "array",
+            "description" : "Tags.",
+            "items" : {
+              "$ref" : "#/components/schemas/Tag."
+            }
+          },
+          "targetLanguage" : {
+            "type" : "string",
+            "description" : "Target language code. See [API resources](#tag/References) for full list of available codes.",
+            "example" : "en_GB"
+          },
+          "targetText" : {
+            "type" : "string",
+            "description" : "Segment target text."
+          },
+          "xliffDocStatus" : {
+            "type" : "string",
+            "description" : "Segment xliff doc status.",
+            "enum" : [ "NEEDS_REVIEW_TRANSLATION", "NEW", "TRANSLATED", "FINAL", "SIGNED_OFF" ]
+          }
+        }
+      },
+      "File" : {
+        "type" : "object",
+        "properties" : {
+          "absolute" : {
+            "type" : "boolean"
+          },
+          "absoluteFile" : {
+            "$ref" : "#/components/schemas/File"
+          },
+          "absolutePath" : {
+            "type" : "string"
+          },
+          "canonicalFile" : {
+            "$ref" : "#/components/schemas/File"
+          },
+          "canonicalPath" : {
+            "type" : "string"
+          },
+          "directory" : {
+            "type" : "boolean"
+          },
+          "file" : {
+            "type" : "boolean"
+          },
+          "freeSpace" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "hidden" : {
+            "type" : "boolean"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "parent" : {
+            "type" : "string"
+          },
+          "parentFile" : {
+            "$ref" : "#/components/schemas/File"
+          },
+          "path" : {
+            "type" : "string"
+          },
+          "totalSpace" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "usableSpace" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "InputStream" : {
+        "type" : "object"
+      },
+      "Project estimates." : {
+        "type" : "object",
+        "properties" : {
+          "currency" : {
+            "type" : "string",
+            "description" : "Currency of estimates. See [API resources](#tag/References) for all currency codes.",
+            "example" : "EUR"
+          },
+          "deliveryDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "Project delivery date."
+          },
+          "price" : {
+            "type" : "number",
+            "description" : "Project cost."
+          },
+          "projectId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Project ID."
+          },
+          "taxPrice" : {
+            "type" : "number",
+            "description" : "VAT calculated for the project cost."
+          }
+        }
+      },
+      "Project statistics." : {
+        "type" : "object",
+        "properties" : {
+          "targetLanguage" : {
+            "type" : "string",
+            "description" : "Target language code. See [API resources](#tag/References) for full list of available codes.",
+            "example" : "en_GB"
+          },
+          "usersStatistics" : {
+            "type" : "array",
+            "description" : "User statistics",
+            "items" : {
+              "$ref" : "#/components/schemas/RSUserStatistics"
+            }
+          }
+        }
+      },
+      "RSCoreMetrics" : {
+        "type" : "object",
+        "description" : "Metric values",
+        "properties" : {
+          "highFuzzyMatchCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyMatchSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyMatchWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyMatchWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyRepeatsCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyRepeatsSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyRepeatsWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyRepeatsWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "iceMatchCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "iceMatchSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "iceMatchWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "iceMatchWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "leveragedCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "leveragedSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "leveragedWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "leveragedWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyMatchCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyMatchSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyMatchWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyMatchWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyRepeatsCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyRepeatsSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyRepeatsWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyRepeatsWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "machineTranslationCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "machineTranslationSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "machineTranslationWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "machineTranslationWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyMatchCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyMatchSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyMatchWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyMatchWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyRepeatsCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyRepeatsSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyRepeatsWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyRepeatsWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "nonTranslatableCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "nonTranslatableSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "nonTranslatableWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "nonTranslatableWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "repeatsCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "repeatsSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "repeatsWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "repeatsWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "totalCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "totalSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "totalWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "totalWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "RSCoreStatistics" : {
+        "type" : "object",
+        "description" : "Statistic values",
+        "properties" : {
+          "highFuzzyMatchCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyMatchSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyMatchTrackedTime" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "highFuzzyMatchWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyMatchWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyRepeatsCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyRepeatsSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyRepeatsTrackedTime" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "highFuzzyRepeatsWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "highFuzzyRepeatsWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "iceMatchCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "iceMatchSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "iceMatchTrackedTime" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "iceMatchWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "iceMatchWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "leveragedCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "leveragedSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "leveragedTrackedTime" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "leveragedWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "leveragedWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyMatchCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyMatchSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyMatchTrackedTime" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "lowFuzzyMatchWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyMatchWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyRepeatsCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyRepeatsSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyRepeatsTrackedTime" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "lowFuzzyRepeatsWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lowFuzzyRepeatsWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "machineTranslationCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "machineTranslationSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "machineTranslationTrackedTime" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "machineTranslationWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "machineTranslationWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyMatchCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyMatchSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyMatchTrackedTime" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "mediumFuzzyMatchWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyMatchWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyRepeatsCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyRepeatsSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyRepeatsTrackedTime" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "mediumFuzzyRepeatsWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mediumFuzzyRepeatsWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "nonTranslatableCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "nonTranslatableSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "nonTranslatableTrackedTime" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "nonTranslatableWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "nonTranslatableWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "otherNonTranslatableCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "otherNonTranslatableTrackedTime" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "otherNonTranslatableWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "otherNonTranslatableWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "repeatsCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "repeatsSegments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "repeatsTrackedTime" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "repeatsWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "repeatsWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "totalCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "totalWhitespaces" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "totalWords" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "RSErrorResponse" : {
+        "type" : "object",
+        "properties" : {
+          "reason" : {
+            "type" : "string"
+          }
+        }
+      },
+      "RSFindCustomerResponse" : {
+        "type" : "object",
+        "properties" : {
+          "activity" : {
+            "type" : "string",
+            "description" : "Status of customer activity.",
+            "enum" : [ "ACTIVE", "INACTIVE" ]
+          },
+          "address" : {
+            "$ref" : "#/components/schemas/Address information."
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Customer ID."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Name of customer."
+          }
+        }
+      },
+      "RSFindUserResponse" : {
+        "type" : "object",
+        "properties" : {
+          "address" : {
+            "$ref" : "#/components/schemas/Address information."
+          },
+          "firstName" : {
+            "type" : "string",
+            "description" : "First ame of a user."
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "User ID."
+          },
+          "lastName" : {
+            "type" : "string",
+            "description" : "Last name of a user."
+          },
+          "username" : {
+            "type" : "string",
+            "description" : "Username of a user."
+          }
+        }
+      },
+      "RSJobAnalysisResponse" : {
+        "type" : "object",
+        "properties" : {
+          "fileName" : {
+            "type" : "string",
+            "description" : "Job file name."
+          },
+          "jobId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Job ID."
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Job analysis status.",
+            "enum" : [ "IN_PROGRESS", "FINISHED", "ERROR", "CANCELLED", "DELETED" ]
+          },
+          "targetLanguage" : {
+            "type" : "string",
+            "description" : "Target language code. See [API resources](#tag/References) for full list of available codes.",
+            "example" : "en_GB"
+          }
+        }
+      },
+      "RSJobMetricsResponse" : {
+        "type" : "object",
+        "description" : "Job metrics.",
+        "properties" : {
+          "coreMetrics" : {
+            "$ref" : "#/components/schemas/RSCoreMetrics"
+          },
+          "jobId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Job id"
+          },
+          "metricsProgress" : {
+            "type" : "object",
+            "description" : "Progress for workflow step"
+          }
+        }
+      },
+      "RSJobStartStatus" : {
+        "type" : "object",
+        "properties" : {
+          "jobId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Job ID."
+          },
+          "status" : {
+            "type" : "boolean",
+            "description" : "Status of job start.",
+            "example" : true
+          }
+        }
+      },
+      "RSJobStatistics" : {
+        "type" : "object",
+        "description" : "Job statistics",
+        "properties" : {
+          "jobId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "sourceStatistics" : {
+            "$ref" : "#/components/schemas/RSCoreStatistics"
+          },
+          "targetStatistics" : {
+            "$ref" : "#/components/schemas/RSCoreStatistics"
+          }
+        }
+      },
+      "RSJobStatusResponse" : {
+        "type" : "object",
+        "properties" : {
+          "completionStatus" : {
+            "type" : "string",
+            "description" : "Completion status of job.\n\nIN_PROGRESS - job is active in the workflow.\n\nFINISHED - job has been completed in all steps of the workflow.\n\nCANCELLED - job is cancelled in the project.\n\nDELETED - job is deleted from the project.\n\nERROR - error is returned for job status when none of the statuses above applies.",
+            "enum" : [ "IN_PROGRESS", "FINISHED", "ERROR", "CANCELLED", "DELETED" ]
+          },
+          "fileName" : {
+            "type" : "string",
+            "description" : "Job file name."
+          },
+          "jobId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Job ID."
+          },
+          "steps" : {
+            "type" : "array",
+            "description" : "Job steps statuses.",
+            "items" : {
+              "$ref" : "#/components/schemas/RSStepStatusResponse"
+            }
+          },
+          "targetLanguage" : {
+            "type" : "string",
+            "description" : "Target language code. See [API resources](#tag/References) for full list of available codes.",
+            "example" : "en_GB"
+          }
+        }
+      },
+      "RSJobWorkflowMoveResponse" : {
+        "type" : "object",
+        "properties" : {
+          "jobId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Job ID."
+          },
+          "result" : {
+            "type" : "boolean",
+            "description" : "Result successful or not.",
+            "example" : false
+          }
+        }
+      },
+      "RSLanguageMetricsResponse" : {
+        "type" : "object",
+        "description" : "Project metrics.",
+        "properties" : {
+          "coreMetrics" : {
+            "$ref" : "#/components/schemas/RSCoreMetrics"
+          },
+          "jobsMetrics" : {
+            "type" : "array",
+            "description" : "Job metrics.",
+            "items" : {
+              "$ref" : "#/components/schemas/RSJobMetricsResponse"
+            }
+          },
+          "metricsProgress" : {
+            "type" : "object",
+            "description" : "Progress for workflow step."
+          },
+          "targetLanguage" : {
+            "type" : "string",
+            "description" : "Target language code. See [API resources](#tag/References) for full list of available codes.",
+            "example" : "en_GB"
+          }
+        }
+      },
+      "RSMetricsProgress" : {
+        "type" : "object",
+        "description" : "Work progress values.",
+        "properties" : {
+          "charactersDone" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "charactersToBeChecked" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "charactersToBeCorrected" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "charactersToBeDone" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "factor" : {
+            "type" : "number"
+          },
+          "factorCharactersDone" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "factorCharactersToBeChecked" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "factorCharactersToBeCorrected" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "factorCharactersToBeDone" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "spacesDone" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "spacesToBeChecked" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "spacesToBeCorrected" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "spacesToBeDone" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "totalCharactersCount" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "totalSpacesCharacters" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "totalUnitsCount" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "totalWordCount" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "unitsDone" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "unitsToBeChecked" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "unitsToBeCorrected" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "unitsToBeDone" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "wordsDone" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "wordsToBeChecked" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "wordsToBeCorrected" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "wordsToBeDone" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "RSProjectAnalysisResponse" : {
+        "type" : "object",
+        "properties" : {
+          "activity" : {
+            "type" : "string",
+            "description" : "Project activity.",
+            "enum" : [ "ACTIVE", "ARCHIVED", "DELETED", "CANCELLED", "AUTO_ARCHIVED", "INACTIVE" ]
+          },
+          "jobs" : {
+            "type" : "array",
+            "description" : "Project jobs analysis statuses.",
+            "items" : {
+              "$ref" : "#/components/schemas/RSJobAnalysisResponse"
+            }
+          },
+          "projectId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Project ID."
+          },
+          "sourceLanguage" : {
+            "type" : "string",
+            "description" : "Source language code. See [API resources](#tag/References) for full list of available codes.",
+            "example" : "en_GB"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Analysis status of project.",
+            "enum" : [ "IN_PROGRESS", "PARTIALLY_FINISHED", "FINISHED" ]
+          }
+        }
+      },
+      "RSProjectAnalysisTemplateResponse" : {
+        "type" : "object",
+        "properties" : {
+          "customerId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "ID of customer that owns analysis template. Null if it is a global template."
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Analysis template ID."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Analysis template name."
+          },
+          "scope" : {
+            "type" : "string",
+            "description" : "Analysis template availability.",
+            "enum" : [ "GLOBAL", "CUSTOMER" ]
+          }
+        }
+      },
+      "RSProjectCreationResponse" : {
+        "type" : "object",
+        "description" : "Response from project creation.",
+        "properties" : {
+          "jobs" : {
+            "type" : "array",
+            "description" : "Job details.",
+            "items" : {
+              "$ref" : "#/components/schemas/RSProjectJob"
+            }
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Project name."
+          },
+          "projectId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Project ID."
+          }
+        }
+      },
+      "RSProjectDeactivateResponse" : {
+        "type" : "object",
+        "properties" : {
+          "success" : {
+            "type" : "boolean",
+            "description" : "Informs whether deactivating project was successful or not.",
+            "example" : true
+          }
+        }
+      },
+      "RSProjectDeletionResponse" : {
+        "type" : "object",
+        "description" : "Response object from project deletion method.",
+        "properties" : {
+          "success" : {
+            "type" : "boolean",
+            "description" : "Informs whether deletion was successful or not.",
+            "example" : true
+          }
+        }
+      },
+      "RSProjectDueDateUpdateRequest" : {
+        "type" : "object",
+        "description" : "JSON format data to update, contains objects with step names and due dates.",
+        "properties" : {
+          "jobs" : {
+            "type" : "array",
+            "description" : "List of objects that include job ids and due dates. The due dates will be changed only for the job's last workflow step.",
+            "items" : {
+              "$ref" : "#/components/schemas/RSProjectJobDueDateRequest"
+            }
+          },
+          "projectDueDate" : {
+            "type" : "string",
+            "description" : "Due date of whole project in ISO-8601 date format. This value will be changed for all job's last workflow step.",
+            "example" : "2018-05-18 or 2018-05-18T23:00:00+01:00"
+          },
+          "steps" : {
+            "type" : "array",
+            "description" : "List of objects that include step names and due dates.",
+            "items" : {
+              "$ref" : "#/components/schemas/RSProjectStepDueDateRequest"
+            }
+          },
+          "targetLanguages" : {
+            "type" : "array",
+            "description" : "List of objects that include target language codes and due dates. The due dates will be changed only for the language's last workflow step.",
+            "items" : {
+              "$ref" : "#/components/schemas/RSProjectTargetLanguageDueDateRequest"
+            }
+          }
+        }
+      },
+      "RSProjectDueDateUpdateResponse" : {
+        "type" : "object",
+        "properties" : {
+          "success" : {
+            "type" : "boolean",
+            "description" : "Informs whether workflow step due dates update was successful or not.",
+            "example" : true
+          }
+        }
+      },
+      "RSProjectEditorLinkRequest" : {
+        "type" : "object",
+        "description" : "Project Editor options.",
+        "properties" : {
+          "defaultSection" : {
+            "type" : "string",
+            "description" : "Default opened section of Project Editor.",
+            "enum" : [ "GENERAL", "METRICS", "STATISTICS", "WORKFLOW", "FILES", "ESTIMATES", "LQA" ]
+          },
+          "estimates" : {
+            "type" : "string",
+            "description" : "Specifies whether Estimates tab is displayed or not.",
+            "default" : "SHOW",
+            "enum" : [ "SHOW", "HIDE" ]
+          },
+          "files" : {
+            "type" : "string",
+            "description" : "Specifies whether Files tab is displayed or not.",
+            "default" : "SHOW",
+            "enum" : [ "SHOW", "HIDE" ]
+          },
+          "general" : {
+            "type" : "string",
+            "description" : "Specifies whether General tab is displayed or not.",
+            "default" : "SHOW",
+            "enum" : [ "SHOW", "HIDE" ]
+          },
+          "lqa" : {
+            "type" : "string",
+            "description" : "Specifies whether LQA tab is displayed or not.",
+            "default" : "SHOW",
+            "enum" : [ "SHOW", "HIDE" ]
+          },
+          "metrics" : {
+            "type" : "string",
+            "description" : "Specifies whether Metrics tab is displayed or not.",
+            "default" : "SHOW",
+            "enum" : [ "SHOW", "HIDE" ]
+          },
+          "statistics" : {
+            "type" : "string",
+            "description" : "Specifies whether Statistics tab is displayed or not.",
+            "default" : "SHOW",
+            "enum" : [ "SHOW", "HIDE" ]
+          },
+          "workflow" : {
+            "type" : "string",
+            "description" : "Specifies whether Workflow tab is displayed or not.",
+            "default" : "SHOW",
+            "enum" : [ "SHOW", "HIDE" ]
+          }
+        }
+      },
+      "RSProjectEditorLinkResponse" : {
+        "type" : "object",
+        "description" : "Project Editor URL.",
+        "properties" : {
+          "url" : {
+            "type" : "string",
+            "description" : "URL to the Project Editor."
+          }
+        }
+      },
+      "RSProjectFileGenerateResponse" : {
+        "type" : "object",
+        "properties" : {
+          "fileId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "File ID."
+          },
+          "fileType" : {
+            "type" : "string",
+            "description" : "Type of a generated file.",
+            "enum" : [ "TARGET", "XLIFF", "QA_REPORT", "HTML", "HTML_TABLE", "PDF", "PDF_TABLE", "TIPP", "HTML_EXTENDED_TABLE", "HTML_COLOURED", "PDF_EXTENDED_TABLE", "PDF_COLOURED", "PDF_COLOURED_BY_XLIFF_DOC_STATUS", "PDF_COLOURED_BY_MATCH_RATE", "TARGET_COLOURED_BY_MATCH_RATE", "TARGET_COLOURED_BY_XLIFF_DOC_STATUS", "XLIFF_DOC", "LQA_REPORT", "LQA_EXTENDED_TABLE_REPORT", "TARGET_PSEUDO", "MULTI_EXCEL" ]
+          },
+          "jobId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Job ID."
+          }
+        }
+      },
+      "RSProjectFileStatusResponse" : {
+        "type" : "object",
+        "description" : "Response description.",
+        "properties" : {
+          "fileId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "File ID."
+          },
+          "jobId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Job ID."
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "Error message."
+          },
+          "projectId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Project ID."
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "File status.",
+            "enum" : [ "IN_PROGRESS", "FINISHED", "ERROR" ]
+          }
+        }
+      },
+      "RSProjectFileUploadResponse" : {
+        "type" : "object",
+        "description" : "Response description.",
+        "properties" : {
+          "jobs" : {
+            "type" : "array",
+            "description" : "List of jobs created depending on languages and files.",
+            "items" : {
+              "$ref" : "#/components/schemas/RSProjectJob"
+            }
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Project name."
+          },
+          "projectId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Project ID."
+          }
+        }
+      },
+      "RSProjectJob" : {
+        "type" : "object",
+        "description" : "Project job description.",
+        "properties" : {
+          "fileName" : {
+            "type" : "string",
+            "description" : "File name."
+          },
+          "jobId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Job ID."
+          },
+          "sourceLanguage" : {
+            "type" : "string",
+            "description" : "Source language code. See [API resources](#tag/References) for full list of available codes.",
+            "example" : "en_GB"
+          },
+          "targetLanguage" : {
+            "type" : "string",
+            "description" : "Target language code. See [API resources](#tag/References) for full list of available codes.",
+            "example" : "en_GB"
+          }
+        }
+      },
+      "RSProjectJobCancelResponse" : {
+        "type" : "object",
+        "properties" : {
+          "success" : {
+            "type" : "boolean",
+            "description" : "Informs whether canceling jobs was successful or not.",
+            "example" : true
+          }
+        }
+      },
+      "RSProjectJobDueDateRequest" : {
+        "type" : "object",
+        "required" : [ "dueDate", "id" ],
+        "description" : "Object that contains job ID to update and new due date.",
+        "properties" : {
+          "dueDate" : {
+            "type" : "string",
+            "description" : "Due date in ISO-8601 date format.",
+            "example" : "2018-05-18 or 2018-05-18T23:00:00+01:00"
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Job ID."
+          }
+        }
+      },
+      "RSProjectResponse" : {
+        "type" : "object",
+        "properties" : {
+          "activity" : {
+            "type" : "string",
+            "description" : "Project activity.",
+            "enum" : [ "ACTIVE", "ARCHIVED", "AUTO_ARCHIVED", "DELETED", "INACTIVE" ]
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Project ID."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Project name."
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Project status.",
+            "enum" : [ "NOT_STARTED", "STARTED", "FINISHED" ]
+          }
+        }
+      },
+      "RSProjectStatusResponse" : {
+        "type" : "object",
+        "properties" : {
+          "activity" : {
+            "type" : "string",
+            "description" : "Project activity.",
+            "enum" : [ "ACTIVE", "ARCHIVED", "AUTO_ARCHIVED", "DELETED", "INACTIVE" ]
+          },
+          "completionStatus" : {
+            "type" : "string",
+            "description" : "Project completion status.\n\nIN_PROGRESS - workflow has not been completed for any job in the project.\n\nPARTIALLY_FINISHED - workflow has been completed for at least one but not for all jobs in the project.\n\nFINISHED - workflow has been completed for all jobs in the project.",
+            "enum" : [ "IN_PROGRESS", "PARTIALLY_FINISHED", "FINISHED" ]
+          },
+          "jobs" : {
+            "type" : "array",
+            "description" : "Project jobs statuses.",
+            "items" : {
+              "$ref" : "#/components/schemas/RSJobStatusResponse"
+            }
+          },
+          "projectId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Project ID."
+          },
+          "sourceLanguage" : {
+            "type" : "string",
+            "description" : "Source language code. See [API resources](#tag/References) for full list of available codes.",
+            "example" : "en_GB"
+          }
+        }
+      },
+      "RSProjectStepDueDateRequest" : {
+        "type" : "object",
+        "required" : [ "dueDate", "name" ],
+        "description" : "Object that contains name of step to update and new due date.",
+        "properties" : {
+          "dueDate" : {
+            "type" : "string",
+            "description" : "Due date in ISO-8601 date format.",
+            "example" : "2018-05-18 or 2018-05-18T23:00:00+01:00"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Workflow step name, should be provide with order number."
+          }
+        }
+      },
+      "RSProjectTargetLanguageDueDateRequest" : {
+        "type" : "object",
+        "required" : [ "dueDate", "languageCode" ],
+        "description" : "Object that contains target language to update and new due date.",
+        "properties" : {
+          "dueDate" : {
+            "type" : "string",
+            "description" : "Due date in ISO-8601 date format.",
+            "example" : "2018-05-18 or 2018-05-18T23:00:00+01:00"
+          },
+          "languageCode" : {
+            "type" : "string",
+            "description" : "Due date in ISO-8601 date format.",
+            "example" : "en_GB"
+          }
+        }
+      },
+      "RSProjectTargetLanguagesAddRequest" : {
+        "type" : "object",
+        "properties" : {
+          "targetLanguages" : {
+            "type" : "array",
+            "description" : "Target languages codes. See [API resources](#tag/References) for full list of available codes.",
+            "items" : {
+              "type" : "string"
+            },
+            "example" : "en_GB"
+          }
+        }
+      },
+      "RSProjectTargetLanguagesAddResponse" : {
+        "type" : "object",
+        "properties" : {
+          "jobs" : {
+            "type" : "array",
+            "description" : "List of jobs created in this project.",
+            "items" : {
+              "$ref" : "#/components/schemas/RSProjectJob"
+            }
+          },
+          "projectId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Project ID."
+          },
+          "projectName" : {
+            "type" : "string",
+            "description" : "Project name."
+          }
+        }
+      },
+      "RSProjectTemplateResponse" : {
+        "type" : "object",
+        "properties" : {
+          "customerId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "ID of customer that owns template. Null if it is a global template."
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Template ID."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Template name."
+          }
+        }
+      },
+      "RSProjectWorkflowFinishResponse" : {
+        "type" : "object",
+        "properties" : {
+          "jobs" : {
+            "type" : "array",
+            "description" : "Response for each job meant to be pushed forward or back in the workflow.",
+            "items" : {
+              "$ref" : "#/components/schemas/RSJobWorkflowMoveResponse"
+            }
+          }
+        }
+      },
+      "RSProjectWorkflowRejectResponse" : {
+        "type" : "object",
+        "properties" : {
+          "jobs" : {
+            "type" : "array",
+            "description" : "Response for each job meant to be pushed forward or back in the workflow.",
+            "items" : {
+              "$ref" : "#/components/schemas/RSJobWorkflowMoveResponse"
+            }
+          }
+        }
+      },
+      "RSProjectWorkflowStartResponse" : {
+        "type" : "object",
+        "properties" : {
+          "errorType" : {
+            "type" : "string",
+            "description" : "Informs what is the reason of false status.",
+            "enum" : [ "PROJECT_INACTIVE", "COST_NOT_APPROVED" ]
+          },
+          "jobs" : {
+            "type" : "array",
+            "description" : "Started jobs.",
+            "items" : {
+              "$ref" : "#/components/schemas/RSJobStartStatus"
+            }
+          },
+          "projectId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Project id."
+          },
+          "status" : {
+            "type" : "boolean",
+            "description" : "Workflow start staus.",
+            "example" : false
+          }
+        }
+      },
+      "RSStepStatistics" : {
+        "type" : "object",
+        "properties" : {
+          "jobsStatistics" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/RSJobStatistics"
+            }
+          },
+          "workflowStepName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "RSStepStatusResponse" : {
+        "type" : "object",
+        "properties" : {
+          "autoStatus" : {
+            "type" : "string",
+            "description" : "Step auto status.",
+            "enum" : [ "SUCCESS", "ERROR" ]
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Step completion status.\n\nNOT_STARTED - workflow has not been started for the job.\n\nIN_PROGRESS - job is active in the workflow step.\n\nFINISHED - job has been completed in the workflow step.",
+            "enum" : [ "IN_PROGRESS", "FINISHED", "NOT_STARTED" ]
+          },
+          "workflowStepName" : {
+            "type" : "string",
+            "description" : "Workflow step name."
+          }
+        }
+      },
+      "RSSystemInfoResponse" : {
+        "type" : "object",
+        "properties" : {
+          "companyName" : {
+            "type" : "string",
+            "description" : "Company name."
+          },
+          "logo" : {
+            "type" : "string",
+            "description" : "Logo."
+          },
+          "version" : {
+            "type" : "string",
+            "description" : "XTM version."
+          },
+          "website" : {
+            "type" : "string",
+            "description" : "URL to XTM website."
+          }
+        }
+      },
+      "RSTokenGenerateRequest" : {
+        "type" : "object",
+        "required" : [ "client", "password", "userId" ],
+        "description" : "Request object for token generation.",
+        "properties" : {
+          "client" : {
+            "type" : "string",
+            "description" : "Your client name."
+          },
+          "password" : {
+            "type" : "string",
+            "description" : "User password."
+          },
+          "userId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "User ID."
+          }
+        }
+      },
+      "RSUserStatistics" : {
+        "type" : "object",
+        "properties" : {
+          "stepsStatistics" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/RSStepStatistics"
+            }
+          },
+          "userDisplayName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "RSWorkflowResponse" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Workflow ID."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Workflow name."
+          }
+        }
+      },
+      "Resource" : {
+        "type" : "object",
+        "properties" : {
+          "description" : {
+            "type" : "string"
+          },
+          "file" : {
+            "$ref" : "#/components/schemas/File"
+          },
+          "filename" : {
+            "type" : "string"
+          },
+          "inputStream" : {
+            "$ref" : "#/components/schemas/InputStream"
+          },
+          "open" : {
+            "type" : "boolean"
+          },
+          "readable" : {
+            "type" : "boolean"
+          },
+          "uri" : {
+            "$ref" : "#/components/schemas/URI"
+          },
+          "url" : {
+            "$ref" : "#/components/schemas/URL"
+          }
+        }
+      },
+      "SegmentContextInformation" : {
+        "type" : "object",
+        "properties" : {
+          "sourceNext" : {
+            "type" : "string",
+            "description" : "Next segment source."
+          },
+          "sourcePrevious" : {
+            "type" : "string",
+            "description" : "Previous segment source."
+          },
+          "targetNext" : {
+            "type" : "string",
+            "description" : "Next segment target."
+          },
+          "targetPrevious" : {
+            "type" : "string",
+            "description" : "Previous segment target."
+          }
+        }
+      },
+      "Tag." : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Tag ID."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Tag name."
+          },
+          "values" : {
+            "type" : "array",
+            "description" : "Tag values.",
+            "items" : {
+              "$ref" : "#/components/schemas/TagValue."
+            }
+          }
+        }
+      },
+      "TagValue." : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Tag value ID."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Tag value name."
+          }
+        }
+      },
+      "URI" : {
+        "type" : "object",
+        "properties" : {
+          "absolute" : {
+            "type" : "boolean"
+          },
+          "authority" : {
+            "type" : "string"
+          },
+          "fragment" : {
+            "type" : "string"
+          },
+          "host" : {
+            "type" : "string"
+          },
+          "opaque" : {
+            "type" : "boolean"
+          },
+          "path" : {
+            "type" : "string"
+          },
+          "port" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "query" : {
+            "type" : "string"
+          },
+          "rawAuthority" : {
+            "type" : "string"
+          },
+          "rawFragment" : {
+            "type" : "string"
+          },
+          "rawPath" : {
+            "type" : "string"
+          },
+          "rawQuery" : {
+            "type" : "string"
+          },
+          "rawSchemeSpecificPart" : {
+            "type" : "string"
+          },
+          "rawUserInfo" : {
+            "type" : "string"
+          },
+          "scheme" : {
+            "type" : "string"
+          },
+          "schemeSpecificPart" : {
+            "type" : "string"
+          },
+          "userInfo" : {
+            "type" : "string"
+          }
+        }
+      },
+      "URL" : {
+        "type" : "object",
+        "properties" : {
+          "authority" : {
+            "type" : "string"
+          },
+          "content" : {
+            "type" : "object"
+          },
+          "defaultPort" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "file" : {
+            "type" : "string"
+          },
+          "host" : {
+            "type" : "string"
+          },
+          "path" : {
+            "type" : "string"
+          },
+          "port" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "protocol" : {
+            "type" : "string"
+          },
+          "query" : {
+            "type" : "string"
+          },
+          "ref" : {
+            "type" : "string"
+          },
+          "userInfo" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}
