@@ -4,7 +4,7 @@
     "title" : "Movie rental API",
     "description" : "No description",
     "contact" : { },
-    "version" : "1.0.0"
+    "version" : "1.1.0"
   },
   "servers" : [ {
     "url" : "https://9r1lb3b.api-mock.int.cloud.talend.com",
