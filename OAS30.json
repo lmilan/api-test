@@ -1,0 +1,220 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Movie rental API",
+    "description" : "No description",
+    "contact" : { },
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://9r1lb3b.api-mock.int.cloud.talend.com",
+    "description" : "This is your API mock endpoint. When called, it will simulate the behavior of your API."
+  } ],
+  "paths" : {
+    "/movies" : {
+      "get" : {
+        "summary" : "Get a list of movies",
+        "responses" : {
+          "2XX" : {
+            "description" : "Status 2XX",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Movie"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies/{id}" : {
+      "get" : {
+        "summary" : "Get information about a movie",
+        "responses" : {
+          "2XX" : {
+            "description" : "Status 2XX",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Movie"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "$ref" : "#/components/parameters/id"
+      } ]
+    },
+    "/orders" : {
+      "post" : {
+        "summary" : "Rent a movie",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Order"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "2XX" : {
+            "$ref" : "#/components/responses/order_success"
+          },
+          "4XX" : {
+            "$ref" : "#/components/responses/order_error"
+          },
+          "5XX" : {
+            "$ref" : "#/components/responses/order_error"
+          }
+        }
+      }
+    },
+    "/orders/{id}" : {
+      "get" : {
+        "summary" : "Get information about an order",
+        "responses" : {
+          "2XX" : {
+            "description" : "Status 2XX",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters" : [ {
+        "$ref" : "#/components/parameters/id"
+      } ]
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Movie" : {
+        "type" : "object",
+        "required" : [ "id", "price", "title", "year" ],
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "description" : "ID of the movie."
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "Title of the movie.",
+            "example" : "Parasite"
+          },
+          "year" : {
+            "type" : "integer",
+            "description" : "Release year of the movie.",
+            "example" : 2019
+          },
+          "director" : {
+            "type" : "string",
+            "description" : "Director of the movie.",
+            "example" : "Bong Joon-ho"
+          },
+          "cast" : {
+            "type" : "array",
+            "description" : "List of actors in the movie.",
+            "items" : {
+              "type" : "string",
+              "example" : "Song Kang-ho"
+            }
+          },
+          "price" : {
+            "type" : "number",
+            "description" : "Price of the movie rental in USD.",
+            "example" : 4.99
+          },
+          "awards" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "Order" : {
+        "type" : "object",
+        "required" : [ "available", "id", "order_id" ],
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "ID of the movie."
+          },
+          "order_id" : {
+            "type" : "number",
+            "description" : "ID of the order.",
+            "readOnly" : true
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "Title of the movie.",
+            "readOnly" : true,
+            "example" : "Avengers: Endgame"
+          },
+          "available" : {
+            "type" : "number",
+            "description" : "Number of days left to watch the movie.",
+            "readOnly" : true,
+            "example" : 7
+          },
+          "price" : {
+            "type" : "number",
+            "description" : "Price of the movie rental."
+          }
+        }
+      }
+    },
+    "responses" : {
+      "order_error" : {
+        "description" : "order_error",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "error" : {
+                  "type" : "string",
+                  "example" : "An error occurred, please try again."
+                }
+              }
+            }
+          }
+        }
+      },
+      "order_success" : {
+        "description" : "order_success",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Order"
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "id" : {
+        "name" : "id",
+        "in" : "path",
+        "required" : true,
+        "description" : "Movie ID",
+        "schema" : {
+          "type" : "string",
+          "description" : "Movie ID"
+        },
+        "example" : "1"
+      }
+    }
+  }
+}
